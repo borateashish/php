@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <script type = "text/javascript">
+
+	function myFunction()
+ 	 {
+      var t2 = document.getElementById("pass").value;
+      if(t2 != null && t2 !="")
+      {
+	//document.getElementById("pass").style.color="red";
+	//document.getElementById("pass").font.size="18px";
+         document.write(t2.fontcolor("Red").fontsize("18px"));
+      }
+      else
+      {
+		//document.write("enter valid input");
+	function increase()
+	{
+		document.getElementById("myImg").height = "300";
+		document.getElementById("myImg").width = "300";
+	}
+	document.write('<img id="myImg" src="index.jpg" onmouseover="increase()" alt="Smiley" width="500" height="500">');
+
+      }
+  }
+  </script>
+
+ Enter Student Name <input type = "text" name = "t1" id = "pass"><br>
+ <button onclick = "myFunction()">Click</button>
+</body>
+</html>

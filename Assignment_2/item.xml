@@ -1,0 +1,3 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/css" href="item.css"?>
+<Store><Item><ItemName>Monitor</ItemName><ItemPrice>20000</ItemPrice><Quantity>10</Quantity></Item><Item><ItemName>Mouse</ItemName><ItemPrice>1000</ItemPrice><Quantity>5</Quantity></Item><Item><ItemName>CPU</ItemName><ItemPrice>5000</ItemPrice><Quantity>8</Quantity></Item><Item><ItemName>Camera</ItemName><ItemPrice>1200</ItemPrice><Quantity>12</Quantity></Item><Item><ItemName>keyboard</ItemName><ItemPrice>8000</ItemPrice><Quantity>16</Quantity></Item></Store>

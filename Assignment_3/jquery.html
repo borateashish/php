@@ -1,0 +1,26 @@
+<html>
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+    $(document).ready(function(){
+      $("#bt1").click(function(){
+         $("p").append("<b>Ashish  </b>");
+       });
+
+      $("#bt2").click(function(){
+         $("ol").append("<li> Arts</li>");
+       });
+  });
+  </script>
+</head>
+<body>
+  <p>My Name is </P>
+  <ol>
+    <li> Science</li>
+    <li> commerce</li>
+  </ol>
+
+<button id = "bt1">Append Paragraph </button>
+<button id = "bt2">Append list number </button>
+</body>
+</html>
