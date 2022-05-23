@@ -1,0 +1,973 @@
+Assignment1:Cookies And Session.
+Set: A
+1. Write a PHP script to keep track of number of times the web page has been access. [Use session and cookies].
+Program:
+<?php
+session_start();
+if(isset($_SESSION['count']))
+$_SESSION['count']=$_SESSION['count']+1;
+else
+$_SESSION['count']=1;
+echo "<h3>This page is accessed</h3>".$_SESSION['count'];
+?>
+
+
+2. Write a PHP script to change the preferences of your web page like font style, font size, font color, background color using cookie. Display selected setting on next web page and actual implementation (with new settings) on third page.
+Program:
+SetA2.html
+
+<html>
+<body>
+<form action="SetA2.php" method="get">
+Select font style :<input type = "text" name = "s1"> <br>
+Enter font size : <input type = "text" name = "s" ><br>
+Enter font color : <input type = "text" name = "c"><br>
+Enter background color :<input type = "text" name = "b"><br>
+<input type = "submit" value = "Next">
+</form></body>
+</html>
+
+SetA2.php:
+
+<?php
+echo "style is ".$_GET['s1']."<br>color is ".$_GET['c']."<br>Background color is ".$_GET['b']."<br>size is ".$_GET['s'];
+setcookie("set1",$_GET['s1'],time()+3600);
+setcookie("set2",$_GET['c'],time()+3600);
+setcookie("set3",$_GET['b'],time()+3600);
+setcookie("set4",$_GET['s'],time()+3600);
+?>
+<html>
+<body>
+<form action="SetA2display.php">
+<input type = "submit" value = "OK">
+</form>
+</body>
+</html>
+
+
+SetA2display.php
+<?php
+$style = $_COOKIE['set1'];
+$color = $_COOKIE['set2'];
+$size = $_COOKIE['set4'];
+$b_color = $_COOKIE['set3'];
+$msg = "Web Technology And Data Analytics Practical Exam";
+echo "<body bgcolor=$b_color>";
+echo "<font color=$color size=$size>$msg";
+echo "</font></body>";
+?>
+
+
+Set: B
+1. Write a PHP script to accept username and password. If in the first three chances, username and password entered is correct then display second form with “Welcome message” otherwise display error message. [Use Session]
+Program: (SetB1.html-SetB1.php)(Username-Webt , Password-12345)
+
+SetB1.html
+<html>
+<head>
+</head>
+<body background="passwd.png">
+<form method="post" action="SetB1.php">
+ENTER CREDENTIALS<br><br>
+Enter Username:<input type="text" name="unm"><br><br>
+Enter Password:<input type="password" name="pas"><br><br>
+<input type="submit" value="LOGIN">
+</body>
+</html>
+
+SetB1.php
+<?php
+session_start();
+$nm=$_POST["unm"];
+$ps=$_POST["pas"];
+if($nm=="Webt" && $ps=="12345")
+{
+echo"Welcome".$nm;
+}
+else
+{
+if($_SESSION['cnt']==3)
+{
+echo"ERROR FAILED TO LOGIN";
+$_SESSION['cnt']=0;
+}
+else if($_SESSION['cnt']<3)
+{
+echo"TRY AGAIN".$_SESSION['cnt'];
+$_SESSION['cnt']=$_SESSION['cnt']+1;
+}
+} ?>
+
+
+2. Write a PHP script to accept Employee details (Eno, Ename, Address) on first page. On second page accept earning (Basic, DA, HRA). On third page print Employee information (Eno, Ename, Address, Basic, DA, HRA, Total) [ Use Session].
+Program:(SetB2.html-SetB2.php-SetB2display) (Data in slips may be changed, change data accordingly)
+
+
+SetB2.html
+<html>
+<body background="employee.png">
+<form method="post" action="SetB2.php">
+<b>
+Emlpoyee Number : <input type="text" name="t1"><br><br>
+Emlpoyee Name : <input type="text" name="t2"><br><br>
+Emlpoyee Address: <input type="text" name="t3"><br><br>
+<input type="submit" value="SAVE DETAILS"><br><br>
+</form>
+</body>
+</html>
+
+
+SetB2.php
+<?php
+session_start();
+$_SESSION["eno"]=$_POST["t1"];
+$_SESSION["enm"]=$_POST["t2"];
+$_SESSION["add"]=$_POST["t3"];
+echo"<br>HELLO ".$_SESSION["enm"]."FILL YOUR EARNING DETAILS";
+echo"<form method=post action='SetB2display.php'>";
+echo"Basic Salary :-><input type=text name=t4><br><br>";
+echo"DA :-><input type=text name=t5><br><br>";
+echo"HRA :-><input type=text name=t6><br><br>";
+echo"<input type=submit value='DISPLAY'></form>";
+?>
+
+
+SetB2display.php
+<?php
+$a=$_POST["t4"];
+$b=$_POST["t5"];
+$c=$_POST["t6"];
+session_start();
+echo"<br><b>Employee Details<br>";
+echo"Employee Name:".$_SESSION["enm"]."<Br>";
+echo"Employee Address:".$_SESSION["add"]."<Br>";
+$sum=$a+$b+$c;
+echo"<br>TOTAL EARNING:".$sum;
+?>
+
+
+Set: C
+1. Crete a form to accept customer information ( Name, Addr, MobNo). Once the customer information is accepted, accept product information in the next form (ProdName, Qty,Rate). Generate the bill for the customer in the next form. Bill should contain the customer information and the information of the products entered.
+Program:(SetC1.html-SetC1.php-SetC1dispay.php)
+
+
+SetC1.html
+<html>
+<body background="customer.jpg">
+<form method = "post" action = "SetC1.php">
+Customer Name <input type = "text" name = "t1"><br><br>
+Customer Address <input type = "text" name = "t2"><br><br>
+Customer Mobile Number <input type = "text" name = "t3"><br><br>
+<input type = "submit" value = "Save and Next"><br>
+</form>
+</body>
+</html>
+
+
+SetC1.php
+<?php
+session_start();
+$_SESSION["cnm"] = $_POST["t1"];
+$_SESSION["add"] = $_POST["t2"];
+$_SESSION["mob"] = $_POST["t3"];
+echo '<br> Hello '.$_SESSION["cnm"].' Plz Enter Your Product Details <br>';
+echo '<form method = "POST" action = "SetC1display.php"><br>';
+echo 'Product Name <input type = "text" name = t4><br>';
+echo 'Quantity <input type = "text" name = t5><br><br>';
+echo 'Rate <input type = "text" name = t6><br><br>';
+echo '<input type = "submit" value = "display"></form><br>';
+?>
+
+
+SetC1display.php
+<?php
+session_start();
+echo "<fieldset>";
+echo "<h1><center>Customer Invoice</center></h1>";
+$b = $_POST["t5"];
+$c = $_POST["t6"];
+echo "<br><b>Customer Details </b><br>";
+echo "Customer Name : ".$_SESSION["cnm"]."<br>";
+echo "Customer Address : ".$_SESSION["add"]."<br>";
+echo "Customer Mobile No : ".$_SESSION["mob"]."<br>";
+echo "<br><b>Product Details </b><br>";
+echo "Product Name :".$_POST["t4"]."<br>";
+echo "Quantity of Product :".$_POST["t5"]."<br>";
+echo "Rate of Product :".$_POST["t6"]."<br>";
+$total = $b*$c;
+echo "Total Amount : ".$total;
+echo "</fieldset>";
+?>
+
+
+Assignment2: XML Documents And DOM
+
+Set: A
+1. Write a script to create XML file named “Item.xml”
+<Item>
+<ItemName> ................ </ItemName>
+<ItemPrice> ...................</ItemPrice>
+<Quantity> ..................... </Quantity>
+</Item>
+Store the details of 5 Items of different Types
+
+
+Program: (Run Program in Terminal to generate XML file command: php filename.php)
+
+<?php
+$xmlstr = '<?xml version="1.0" encoding="UTF-8" ?>';
+$sxe = new SimpleXMLElement("<Item></Item>");
+$item1 = $sxe->addChild('Item1');
+$item1->addChild('ItemName', 'Pen');
+$item1->addChild('ItemPrice', 20);
+$item1->addChild('Quantity', 100);
+$item1 = $sxe->addChild('Item1');
+$item1->addChild('ItemName', 'Pencil');
+$item1->addChild('ItemPrice', 24);
+$item1->addChild('Quantity', 200);
+$item1 = $sxe->addChild('Item1');
+$item1->addChild('ItemName', 'Rubber');
+$item1->addChild('ItemPrice', 30);
+$item1->addChild('Quantity', 300);
+$item1 = $sxe->addChild('Item1');
+$item1->addChild('ItemName', 'Scale');
+$item1->addChild('ItemPrice', 25);
+$item1->addChild('Quantity', 100);
+$item1 = $sxe->addChild('Item1');
+$item1->addChild('ItemName', 'Book');
+$item1->addChild('ItemPrice', 40);
+$item1->addChild('Quantity', 500);
+$sxe->asXML('item.xml');
+?>
+Item.xml gets created
+
+2. Link “ Item. Xml” file to the CSS style sheet and get well formatted output as given below
+
+i) ItemName :
+Color : red;
+Font-family : copperplate Gothic Light;
+Font-size : 16pt;
+Font :bold;
+ii) ItemPrice and Quantity
+color:yellow;
+font-family:Arial;
+font-size:12 pt;
+font:bold;
+Program:
+SetA2.css
+ItemName
+{
+color : red;
+font-family : copperplate Gothic Light;
+font-size : 16pt;
+font : bold;
+}
+ItemPrice
+{
+color : yellow;
+font-family : Arial;
+font-size : 12pt;
+font : bold;
+}
+Quantity
+{
+color : black;
+font-family : Arial;
+font-size : 12pt;
+font : bold;
+}
+3. Write a PHP script to generate an XML file in the following format in PHP.
+<?xml version="1.0" encoding="UTF-8"?>
+<BookInfo>
+<book>
+<bookno>1</bookno>
+<bookname>JAVA</bookname>
+<authorname> Balguru Swami</authorname>
+<price>250</price>
+<year>2006</year>
+</book>
+<book>
+<bookno>2</bookno>
+<bookname>C</bookname>
+<authorname> Denis Ritchie</authorname>
+<price>500</price>
+<year>1971</year>
+</book>
+</BookInfo>
+Program: SetA3.php generates book.xml file (Run SetA3.php in terminal command-php SetA3.php )
+SetA3.php
+<?php
+$dom = new DOMDocument();
+$dom->encoding = 'utf-8';
+$dom->xmlVersion = '1.0';
+$dom->formatOutput = true;
+$xml_file_name = 'book.xml';
+$root = $dom->createElement('BookInfo');
+$book_node = $dom->createElement('book');
+$attr_book_id = new DOMAttr('bookno', '1');
+$book_node->setAttributeNode($attr_book_id);
+$child_node_name = $dom->createElement('bookname', 'Java');
+$book_node->appendChild($child_node_name);
+$child_node_author = $dom->createElement('authorname', 'Balguru swami');
+$book_node->appendChild($child_node_author);
+$child_node_price = $dom->createElement('Price', '250');
+$book_node->appendChild($child_node_price);
+$child_node_year = $dom->createElement('year', '2006');
+$book_node->appendChild($child_node_year);
+$book_node1 = $dom->createElement('book');
+$attr_book_id1 = new DOMAttr('bookno', '2');
+$book_node1->setAttributeNode($attr_book_id1);
+$child_node_name1 = $dom->createElement('bookname', 'C');
+$book_node1->appendChild($child_node_name1);
+$child_node_author1 = $dom->createElement('authorname', 'Denis Ritchie');
+$book_node1->appendChild($child_node_author1);
+$child_node_price1 = $dom->createElement('Price', '500');
+$book_node1->appendChild($child_node_price1);
+$child_node_year1 = $dom->createElement('year', '1971');
+$book_node1->appendChild($child_node_year1);
+$root->appendChild($book_node);
+$root->appendChild($book_node1);
+$dom->appendChild($root);
+$dom->save($xml_file_name);
+echo "<a href= $xml_file_name> $xml_file_name </a> has been successfully created";
+?>
+Set: B
+1. Write PHP script to read above created “book.xml” file into simpleXML object. Display attributes and elements (Hint L simple_xml_load_file() function).
+Program:
+SetB1.php
+<?php
+$book1 = simplexml_load_file('book.xml');
+#var_dump($book1);
+foreach($book1->book as $bnm)
+{
+echo "Book No =". $bnm->attributes()."<br>" ;
+echo "Book Name = $bnm->bookname: "."<br>";
+echo "Author Name = $bnm->authorname: "."<br>";
+echo "Price = $bnm->Price: "."<br>";
+echo "Year = $bnm->year; "."<br>";
+}
+?>
+2. Write a PHP script to read “Movie.xml” file and print all MovieTitle and ActorName of file using DOMDocument
+Parser. “Movie.xml” file should contain following information with at least 5 records with values. MovieInfo, MovieNo, MovieTitle, ActorName , ReleaseYear
+Program:
+SetB2.php (generates movies.xml file run in terminal)
+<?php
+$doc = new DOMDocument("1.0", "UTF-8");
+$doc->formatOutput = true;
+$movieinfo= $doc->createElement("MovieInfo");
+$doc->appendChild($movieinfo);
+$movie= $doc->createElement("movie");
+$movie->setAttribute("type","Classical");
+$movieinfo->appendChild($movie);
+$movieno= $doc->createElement("MovieNo","1");
+$movie->appendChild($movieno);
+$movietitle= $doc->createElement("MovieTitle","Simba");
+$movie->appendChild($movietitle);
+$actorname= $doc->createElement("ActorName","Ranveer Singh");
+$movie->appendChild($actorname);
+$releaseyear= $doc->createElement("ReleaseYear","2021");
+$movie->appendChild($releaseyear);
+$movie= $doc->createElement("movie");
+$movie->setAttribute("type","Classical");
+$movieinfo->appendChild($movie);
+$movieno= $doc->createElement("MovieNo","2");
+$movie->appendChild($movieno);
+$movietitle= $doc->createElement("MovieTitle","Fast and Furious");
+$movie->appendChild($movietitle);
+$actorname= $doc->createElement("ActorName","Vin Diesel");
+$movie->appendChild($actorname);
+$releaseyear= $doc->createElement("ReleaseYear","2022");
+$movie->appendChild($releaseyear);
+$movie= $doc->createElement("movie");
+$movie->setAttribute("type","Horror");
+$movieinfo->appendChild($movie);
+$movieno= $doc->createElement("MovieNo","3");
+$movie->appendChild($movieno);
+$movietitle= $doc->createElement("MovieTitle","X");
+$movie->appendChild($movietitle);
+$actorname= $doc->createElement("ActorName","Jenna Ortega");
+$movie->appendChild($actorname);
+$releaseyear= $doc->createElement("ReleaseYear","2022");
+$movie->appendChild($releaseyear);
+$movie= $doc->createElement("movie");
+$movie->setAttribute("type","Horror");
+$movieinfo->appendChild($movie);
+$movieno= $doc->createElement("MovieNo","4");
+$movie->appendChild($movieno);
+$movietitle= $doc->createElement("MovieTitle","Annabelle");
+$movie->appendChild($movietitle);
+$actorname= $doc->createElement("ActorName","Unknown");
+$movie->appendChild($actorname);
+$releaseyear= $doc->createElement("ReleaseYear","2022");
+$movie->appendChild($releaseyear);
+$movie= $doc->createElement("movie");
+$movie->setAttribute("type","Action");
+$movieinfo->appendChild($movie);
+$movieno= $doc->createElement("MovieNo","5");
+$movie->appendChild($movieno);
+$movietitle= $doc->createElement("MovieTitle","Shole");
+$movie->appendChild($movietitle);
+$actorname= $doc->createElement("ActorName","Dharmendra");
+$movie->appendChild($actorname);
+$releaseyear= $doc->createElement("ReleaseYear","1990");
+$movie->appendChild($releaseyear);
+$movie= $doc->createElement("movie");
+$movie->setAttribute("type","Action");
+$movieinfo->appendChild($movie);
+$movieno= $doc->createElement("MovieNo","6");
+$movie->appendChild($movieno);
+$movietitle= $doc->createElement("MovieTitle","Batala House");
+$movie->appendChild($movietitle);
+$actorname= $doc->createElement("ActorName","john");
+$movie->appendChild($actorname);
+$releaseyear= $doc->createElement("ReleaseYear","2020");
+$movie->appendChild($releaseyear);
+$doc->save("movies.xml");
+echo "<h4>movies.xml created<h4>";
+?>
+SetB2readmovies.php (reads movies.xml file)
+<?php
+$doc=simplexml_load_file("movies.xml");
+foreach($doc->movie as $movie)
+{
+echo "Movie Type: ".$movie->attributes() ."<br>";
+echo "Movie Title: ".$movie->MovieTitle."<br>";
+echo "<br>"."Actor Name: ".$movie->ActorName."<br>";
+echo "<br>___________________________________________________________________________________<br>";
+}
+?>
+Set: C
+1. Create a XML file which gives details of movies available in “Movie CD Store “ from following categories
+a) Classical
+b) Horror
+c) Action
+Elements in each category are in the following format
+<Category>
+<MovieTitle> ................ </ MovieTitle >
+<ActorName> ...................</ActorName>
+<ReleaseYear> ..................... </ReleaseYear>
+</Category>
+Save the file with name “movies.xml”
+Program:
+SetC1.php (creates movies.xml file run in terminal)
+<?php
+$dom = new DOMDocument();
+$dom->encoding = 'utf-8';
+$dom->xmlVersion = '1.0';
+$dom->formatOutput = true;
+$xml_file_name = 'Movies1.xml';
+$root = $dom->createElement('category');
+$movie_node = $dom->createElement('Classical');
+$attr_movie_id = new DOMAttr('MovieTitle', 'KGF');
+$child_node_name = $dom->createElement('ActorName', 'Yash');
+$movie_node->appendChild($child_node_name);
+$child_node_Release = $dom->createElement('ReleaseYear', '2018');
+$movie_node->appendChild($child_node_Release);
+$movie_node1 = $dom->createElement('Horror');
+$attr_movie_id1 = new DOMAttr('MovieTitle', 'KGF2');
+$child_node_name1 = $dom->createElement('ActorName', 'Yash');
+$movie_node1->appendChild($child_node_name1);
+$child_node_Release1 = $dom->createElement('ReleaseYear', '2022');
+$movie_node1->appendChild($child_node_Release1);
+$movie_node2 = $dom->createElement('Action');
+$attr_movie_id2 = new DOMAttr('MovieTitle', 'Yevdu');
+$child_node_name2 = $dom->createElement('ActorName', 'Vijay');
+$movie_node2->appendChild($child_node_name2);
+$child_node_Release2 = $dom->createElement('ReleaseYear', '2015');
+$movie_node2->appendChild($child_node_Release2);
+$movie_node3 = $dom->createElement('Action');
+$attr_movie_id3 = new DOMAttr('MovieTitle', 'ABCD');
+$child_node_name3 = $dom->createElement('ActorName', 'Varun');
+$movie_node3->appendChild($child_node_name3);
+$child_node_Release3 = $dom->createElement('ReleaseYear', '2022');
+$movie_node3->appendChild($child_node_Release3);
+$movie_node4 = $dom->createElement('Horror');
+$attr_movie_id4 = new DOMAttr('MovieTitle', '1920');
+$child_node_name4 = $dom->createElement('ActorName', 'XYZ');
+$movie_node4->appendChild($child_node_name4);
+$child_node_Release4 = $dom->createElement('ReleaseYear', '2022');
+$movie_node4->appendChild($child_node_Release4);
+$root->appendChild($movie_node);
+$root->appendChild($movie_node1);
+$root->appendChild($movie_node2);
+$root->appendChild($movie_node3);
+$root->appendChild($movie_node4);
+$dom->appendChild($root);
+$dom->save($xml_file_name);
+echo "<a href= $xml_file_name> $xml_file_name </a> has been successfully created";
+?>
+Assignment3: JavaScript and JQuery.
+Set: A
+1. Write a javascript to display message ‘Exams are near, have you started preparing for?’ using alert, prompt and confirm boxes. Accept proper input from user and display messages accordingly.
+Program:
+SetA1.html
+<!DOCTYPE html>
+<html>
+<body>
+<script language = "javascript">
+visiter_name=prompt("Exams Are Near!!, Have You Started Preparing For");
+if(visiter_name != null && visiter_name != "")
+{
+var r = confirm("Press a button");
+if(r == true)
+{
+x = "You Pressed OK";
+}
+else {
+x = "You Pressed Cancel";}
+alert("Exams Are Near!!, Have You Started Preparing For :"+visiter_name);
+}
+else
+alert("Blank Name");
+</script>
+</body>
+</html>
+2. Add or append in paragraph text and also in the numbered(ordered) list in a given HTML document using jQuery selectors.[Hint : Use Append( ) method]
+Program:
+SetA2,html
+<!DOCTYPE html>
+<html>
+<head>
+<script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+$("#btn1").click(function(){
+$("p").append("<b>WebTechnology </b>");
+});
+$("#btn2").click(function(){
+$("ol").append("<b> Number 5</b>");
+});
+});
+</script>
+</head>
+<body>
+<p>My Name is </P>
+<ol>
+<li> Number 1</li>
+<li> Number 2</li>
+<li> Number 3</li>
+<li> Number 4</li>
+</ol>
+<button id = "btn1">Append Name </button>
+<button id = "btn2">Append Number </button>
+</body>
+</html>
+Set: B
+1. Write a javascript function to validate username and password for a membership form.
+Program:
+SetB1.html
+<!DOCTYPE html>
+<html>
+<body>
+<script type = "text/javascript">
+function validateform(){
+var name=document.myform.name.value;
+var password=document.myform.password.value;
+if (name==null || name==""){
+alert("Name can't be blank");
+return false;
+}else if(password.length<6){
+alert("Password must be at least 6 characters long.");
+return false;
+}
+}
+</script>
+<body background="passwd.jpg">
+<form name="myform" method="post" action="" onsubmit="return validateform()" >
+Name: <input type="text" name="name"><br/>
+Password: <input type="password" name="password"><br/>
+<input type="submit" value="register">
+</form>
+</body>
+</html>
+2. To insert text before and after an image using jQuery.[Hint : Use before( ) and after( )].
+Program:
+SetB2.html
+<!DOCTYPE html>
+<html>
+<head>
+<script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+$("#btn1").click(function(){
+$("img").before("<b>Look deep into the nature</b>");
+});
+$("#btn2").click(function(){
+$("img").after("<b>and then you will understand everything better</b>");
+});
+});
+</script>
+</head>
+<body>
+<img src="nature.jpg" width="600" height="500">
+<button id = "btn1">Before Text</button>
+<button id = "btn2">After Text</button>
+</body>
+</html>
+Set: C
+1. Write a Javascript program to accept name of student, change font color to red, font size to 18 if student name is present otherwise on clicking on empty text box display image which changes its size (Use onblur, onload, onmousehover, onmouseclick, onmouseup)
+Program:
+SetC1.html
+<!DOCTYPE html>
+<html>
+<body>
+<script type = "text/javascript">
+function myFunction()
+{
+var t2 = document.getElementById("pass").value;
+if(t2 != null && t2 !="")
+{
+//document.getElementById("pass").style.color="red";
+//document.getElementById("pass").font.size="18px";
+document.write(t2.fontcolor("red") && t2.fontsize("18px"));
+}
+else
+{
+alert("Pleae enter valid name");
+}
+}
+</script>
+Enter Student Name <input type = "text" name = "t1" id = "pass"><br>
+<button onclick = "myFunction()">Click</button>
+</body>
+</html>
+2. Remove div section elements after clicking on button using jQuery. [Hint : Use #id selector]
+Program:
+SetC2.html
+<!DOCTYPE html>
+<html>
+<html>
+<script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+$("#btn1").click(function(){
+$('div').remove();
+});
+});
+</script>
+</head>
+<body>
+<div >
+This is Div.
+</div>
+<button id = "btn1">Click </button>
+</body>
+</html>
+Assignment4: Ajax
+Set: A
+1. Write AJAX program to read contact.dat file and print the contents of the file in a tabular format when the user clicks on print button. Contact.dat file should contain srno, name, residence number, mobile number, Address. [Enter at least 3 record in contact.dat file]
+Program:(SetA1.html-SetA1.php)
+SetA1.html
+<html>
+<head>
+<style>
+span
+{
+font-size: 25px;
+}
+table
+{
+color: blueviolet; ;
+}
+</style>
+<script type="text/javascript" >
+function print()
+{
+var ob=false;
+ob=new XMLHttpRequest();
+ob.open("GET","SetA1.php");//emailid="+eid);
+ob.send();
+ob.onreadystatechange=function()
+{
+if(ob.readyState==4 && ob.status==200)
+{
+document.getElementById("i").innerHTML=ob.responseText;
+}
+}
+}
+</script>
+</head>
+<body>
+<center>
+<h3>Display the contents of a contact.dat file </h3>
+<br><input type="button" value=Print onclick="print()" >
+<span id="i"></span>
+</center>
+</body>
+</html>
+SetA1.php
+<?php
+$fp = fopen('contact.dat',r);
+echo"<table border=1>";
+echo"<tr><th>Sr.No</th><th>Name</th><th>Residence Number</th><th>Mobile Number</th><th>Address</th></tr>";
+while($row = fscanf($fp,"%s %s %s %s %s"))
+{
+echo"<tr>";
+foreach($row as $r)
+{
+echo"<td>$r</td>";
+}
+echo"</tr>";
+}
+echo"</table>";
+fclose($fp);
+?>
+2. Write AJAX program where the user is requested to write his or her name in a text box, and the server keeps sending back responses while the user is typing. If the user name is not entered then the message displayed will be, “Stranger, please tell me your name!”. If the name is Rohit, Virat, Dhoni, Ashwin or Harbhajan , the server responds with “Hello, master <user name>!”. If the name is anything else, the message will be “<user name>, I don’t know you!”.
+Program:(SetA2.html-SetA2.php)
+SetA2.html
+<html>
+<head>
+<script type = "text/javascript">
+function print()
+{
+var x = false;
+x = new XMLHttpRequest();
+t1 = document.getElementById("pass").value;
+x.open("GET" , "SetA2.php?t1=" + t1,true);
+x.send();
+x.onreadystatechange = function()
+{
+if(x.readyState == 4 && x.status == 200)
+{
+document.getElementById("i").innerHTML = x.responseText;
+}
+}
+}
+</script>
+</head>
+<body>
+Enter Name <input type = "text" name = "t1" id = "pass">
+<input type = "button" value = "submit" onclick = "print()">
+<span id = "i"></span>
+</body>
+</html>
+SetA2.php
+<?php
+$nm = $_GET['t1'];
+// echo $nm;
+$name = array("ROHIT","VIRAT","DHONI","ASHWIN","HARBHAJAN");
+if(in_array(strtoupper($nm), $name))
+{
+echo "<br>Hello Master " . $nm . "!";
+}
+else
+{
+echo "<br>Stranger , please tell me your name !";
+}
+?>
+Set: B
+1. Create TEACHER table as follows TEACHER(tno, tname, qualification, salary). Write Ajax program to select a teachers name and print the selected teachers details.
+Program:(SetB1.html-SetB1.php)
+SetB1.html
+<html>
+<head>
+<script type = "text/javascript">
+function print()
+{
+var x = false;
+x = new XMLHttpRequest();
+t1 = document.getElementById("pass").value;
+x.open("GET" , "SetB1.php?t1=" + t1,true);
+x.send();
+x.onreadystatechange = function()
+{
+if(x.readyState == 4 && x.status == 200)
+{
+document.getElementById("i").innerHTML = x.responseText;
+}
+}
+}
+</script>
+</head>
+<body>
+Enter Teacher Name <input type = "text" name = "t1" id = "pass">
+<input type = "button" value = "submit" onclick = "print()">
+<span id = "i"></span>
+</body>
+</html>
+SetB1.php
+<?php
+$tnm= $_GET['t1'];
+$con_string= "host = 192.168.1.21 dbname = ty user=ty";
+$con= pg_connect($con_string);
+echo "<br>";
+$query1= "select * from Teacher where t_name='$tnm';";
+$rs1= pg_query($con, $query1) or die("Cannot Execute Query.");
+while($row= pg_fetch_row($rs1))
+echo "$row[0] $row[1] $row[2] $row[3]\n<br>";
+pg_close();
+?>
+2. Write Ajax program to print Order details by selecting a Customer’s name. Create table Customer and Order as follows with 1 : M cardinality CUSTOMER (cno, cname, city) and ORDER(ono, odate, shipping address)
+Program:(SetB2.html-SetB2.php)
+SetB2.html
+<html>
+<script type= "text/javascript">
+function display()
+{
+ob= new XMLHttpRequest();
+var tnm=document.getElementById("tnm").value;
+ob.open("GET", "SetB2.php?tnm="+tnm, true);
+ob.send();
+ob.onreadystatechange= function()
+{
+if(ob.readyState==4 && ob.status==200)
+document.getElementById("i").innerHTML= ob.responseText;
+}
+}
+</script>
+<body>
+<h1>Display Order's details</h1>
+Enter Customer Name: <input type= text name= tnm id=tnm><br>
+<input type= submit value= Display onclick=display()>
+<span id=i></span>
+</body>
+</html>
+SetB2.php
+<?php
+$tnm= $_GET['tnm'];
+$con_string= "host=192.168.1.21 dbname=ty user=ty";
+$con= pg_connect($con_string);
+echo "<br>";
+$query1= "select * from customer where cname = '$tnm';";
+$query2= "select * from orders where cno = (select cno from customer where cname='$tnm');";
+$rs1= pg_query($con, $query1) or die("Cannot Execute Query.");
+$rs2= pg_query($con, $query2) or die("Cannot Execute Query.");
+echo "Customer Bill";
+while($row= pg_fetch_row($rs1))
+echo "Customer no- $row[0]<br>
+Customer name- $row[1]<br>
+City- $row[2] \n<br><br>";
+while($row= pg_fetch_row($rs2))
+echo "Order- $row[0]<br>
+Order date- $row[1]<br>
+Shipping address - $row[2] \n<br>
+Customer no- $row[3]<br>";
+pg_close();
+?>
+Set: C
+1. Write Ajax program to fetch suggestions when is user is typing in a textbox. (eg like google suggestions. Hint create array of suggestions and matching string will be displayed)
+Program:(SetC1.html-SetC1.php)
+SetC1.html
+<html>
+<body>
+<script type="text/javascript">
+function display()
+{
+var x= new XMLHttpRequest();
+var n= document.getElementById('n').value;
+x.open("GET", "SetC1.php?n="+n, true);
+x.send();
+x.onreadystatechange = function()
+{
+if(x.readyState == 4 && x.status==200)
+{
+document.getElementById("show").innerHTML = x.responseText;
+}
+}
+}
+</script>
+Search Box: <input type="text" name='n' id='n' onkeyup="display()"> <br>
+<h1 id="show"> </h1>
+</body>
+</html>
+SetC1.php
+<?php
+$n=$_GET['n'];
+$a=array();
+$a[]="Nidhi";
+$a[]="Shruti";
+$a[]="Rutuja";
+$a[]="Ashish";
+$a[]="Tanvi";
+echo "List of Names=<br>";
+foreach($a as $v)
+{
+$s=substr($v,0,strlen($n));
+if($s===$n)
+echo "$v<br>";
+}
+?>
+2. Write Ajax program to get book details from XML file when user select a book name. Create XML file for storing details of book(title, author, year, price).
+Program:(Requires book.xml file)(SetC2.html-SetC2.php)
+SetC2.html
+<html>
+<body>
+<script type="text/javascript">
+function showHint(str)
+{
+if(str == "")
+{
+document.getElementById("mydiv").innerHTML = "Error: select book";
+return;
+}
+if(window.XMLHttpRequest)
+{
+obj = new XMLHttpRequest();
+}
+else if(window.ActiveXObject)
+{
+obj = new ActiveXObject("Microsoft.XMLHTTP");
+}
+if(obj == null)
+{
+alert("Browser does not support HTTP request");
+return ;
+}
+var url = "SetC2.php";
+url = url +"?q=" + str;
+obj.open("GET" , url , true);
+obj.send(null);
+obj.onreadystatechange = function()
+{
+if(obj.readyState == 4 && obj.status == 200)
+{
+document.getElementById("mydiv").innerHTML = obj.responseText;
+}
+}
+}
+</script>
+</head>
+<body>
+<p><b>Book Name </b></p>
+<form>
+<select name = "bname" onchange = "showHint(this.value)">
+<option value ="">select book </option>
+<option value ="Java">Java</option>
+<option value ="C">C</option>
+</select>
+</form>
+<div id = "mydiv"><b>Book Info</b></div>
+</body>
+</html>
+SetC2.php
+<?php
+$book1 = simplexml_load_file('book.xml');
+$q = $_GET["q"];
+foreach($book1->book as $bnm)
+{
+if($bnm->bookname == $q)
+{
+echo "Book No =". $bnm->attributes()."<br>" ;
+echo "Book Name = $bnm->bookname "."<br>";
+echo "Author Name = $bnm->authorname "."<br>";
+echo "Price = $bnm->Price "."<br>";
+echo "Year = $bnm->year "."<br>";
+}
+}
+?>
+Book.xml
+<?xml version="1.0" encoding="utf-8"?>
+<BookInfo>
+<book bookno="1">
+<bookname>Java</bookname>
+<authorname>Balguru swami</authorname>
+<Price>250</Price>
+<year>2006</year>
+</book>
+<book bookno="2">
+<bookname>C</bookname>
+<authorname>Denis Ritchie</authorname>
+<Price>500</Price>
+<year>1971</year>
+</book>
+</BookInfo>
