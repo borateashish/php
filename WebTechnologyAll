@@ -216,28 +216,34 @@ Program: (Run Program in Terminal to generate XML file command: php filename.php
 
 <?php
 $xmlstr = '<?xml version="1.0" encoding="UTF-8" ?>';
-$sxe = new SimpleXMLElement("<Item></Item>");
-$item1 = $sxe->addChild('Item1');
-$item1->addChild('ItemName', 'Pen');
-$item1->addChild('ItemPrice', 20);
-$item1->addChild('Quantity', 100);
-$item1 = $sxe->addChild('Item1');
-$item1->addChild('ItemName', 'Pencil');
-$item1->addChild('ItemPrice', 24);
-$item1->addChild('Quantity', 200);
-$item1 = $sxe->addChild('Item1');
-$item1->addChild('ItemName', 'Rubber');
-$item1->addChild('ItemPrice', 30);
-$item1->addChild('Quantity', 300);
-$item1 = $sxe->addChild('Item1');
-$item1->addChild('ItemName', 'Scale');
-$item1->addChild('ItemPrice', 25);
-$item1->addChild('Quantity', 100);
-$item1 = $sxe->addChild('Item1');
-$item1->addChild('ItemName', 'Book');
-$item1->addChild('ItemPrice', 40);
-$item1->addChild('Quantity', 500);
+$sxe = new SimpleXMLElement("<Store></Store>");
+
+$item1 = $sxe->addChild('Item');
+$item1->addChild('ItemName', 'Monitor');
+$item1->addChild('ItemPrice', 20000);
+$item1->addChild('Quantity', 10);
+
+$item2 = $sxe->addChild('Item');
+$item2->addChild('ItemName', 'Mouse');
+$item2->addChild('ItemPrice', 1000);
+$item2->addChild('Quantity', 5);
+
+$item3 = $sxe->addChild('Item');
+$item3->addChild('ItemName', 'CPU');
+$item3->addChild('ItemPrice', 5000);
+$item3->addChild('Quantity', 8);
+
+$item4 = $sxe->addChild('Item');
+$item4->addChild('ItemName', 'Camera');
+$item4->addChild('ItemPrice', 1200);
+$item4->addChild('Quantity', 12);
+
+$item5 = $sxe->addChild('Item');
+$item5->addChild('ItemName', 'keyboard');
+$item5->addChild('ItemPrice', 8000);
+$item5->addChild('Quantity', 16);
 $sxe->asXML('item.xml');
+
 ?>
 Item.xml gets created
 
@@ -253,6 +259,8 @@ color:yellow;
 font-family:Arial;
 font-size:12 pt;
 font:bold;
+
+
 Program:
 SetA2.css
 ItemName
@@ -276,6 +284,8 @@ font-family : Arial;
 font-size : 12pt;
 font : bold;
 }
+
+
 3. Write a PHP script to generate an XML file in the following format in PHP.
 <?xml version="1.0" encoding="UTF-8"?>
 <BookInfo>
@@ -294,62 +304,88 @@ font : bold;
 <year>1971</year>
 </book>
 </BookInfo>
+
+
 Program: SetA3.php generates book.xml file (Run SetA3.php in terminal command-php SetA3.php )
 SetA3.php
 <?php
-$dom = new DOMDocument();
-$dom->encoding = 'utf-8';
-$dom->xmlVersion = '1.0';
-$dom->formatOutput = true;
-$xml_file_name = 'book.xml';
-$root = $dom->createElement('BookInfo');
-$book_node = $dom->createElement('book');
-$attr_book_id = new DOMAttr('bookno', '1');
-$book_node->setAttributeNode($attr_book_id);
-$child_node_name = $dom->createElement('bookname', 'Java');
-$book_node->appendChild($child_node_name);
-$child_node_author = $dom->createElement('authorname', 'Balguru swami');
-$book_node->appendChild($child_node_author);
-$child_node_price = $dom->createElement('Price', '250');
-$book_node->appendChild($child_node_price);
-$child_node_year = $dom->createElement('year', '2006');
-$book_node->appendChild($child_node_year);
-$book_node1 = $dom->createElement('book');
-$attr_book_id1 = new DOMAttr('bookno', '2');
-$book_node1->setAttributeNode($attr_book_id1);
-$child_node_name1 = $dom->createElement('bookname', 'C');
-$book_node1->appendChild($child_node_name1);
-$child_node_author1 = $dom->createElement('authorname', 'Denis Ritchie');
-$book_node1->appendChild($child_node_author1);
-$child_node_price1 = $dom->createElement('Price', '500');
-$book_node1->appendChild($child_node_price1);
-$child_node_year1 = $dom->createElement('year', '1971');
-$book_node1->appendChild($child_node_year1);
-$root->appendChild($book_node);
-$root->appendChild($book_node1);
-$dom->appendChild($root);
-$dom->save($xml_file_name);
-echo "<a href= $xml_file_name> $xml_file_name </a> has been successfully created";
+$doc = new DOMDocument("1.0", "UTF-8");
+$doc->formatOutput = true;
+$bookinfo= $doc->createElement("BookInfo");
+$doc->appendChild($bookinfo);
+
+$book= $doc->createElement("book");
+$bookinfo->appendChild($book);
+
+$bookno= $doc->createElement("bookno","1");
+$book->appendChild($bookno);
+
+$bookname= $doc->createElement("bookname","JAVA");
+$book->appendChild($bookname);
+
+$authorname= $doc->createElement("authorname","Balguru Swami");
+$book->appendChild($authorname);
+
+$price= $doc->createElement("price","250");
+$book->appendChild($price);
+
+$year= $doc->createElement("year","2006");
+$book->appendChild($year);
+
+$book= $doc->createElement("book");
+$bookinfo->appendChild($book);
+
+$bookno= $doc->createElement("bookno","2");
+$book->appendChild($bookno);
+
+$bookname= $doc->createElement("bookname","C");
+$book->appendChild($bookname);
+
+$authorname= $doc->createElement("authorname","Denisn Ritchie");
+$book->appendChild($authorname);
+
+$price= $doc->createElement("price","500");
+$book->appendChild($price);
+
+$year= $doc->createElement("year","1971");
+$book->appendChild($year);
+
+$doc->save("book.xml");
+echo "book.xml created<h4>";
 ?>
+
+
+
 Set: B
 1. Write PHP script to read above created “book.xml” file into simpleXML object. Display attributes and elements (Hint L simple_xml_load_file() function).
+
 Program:
 SetB1.php
 <?php
-$book1 = simplexml_load_file('book.xml');
-#var_dump($book1);
-foreach($book1->book as $bnm)
+$xml=simplexml_load_file("setb1.xml") or die("eror:cannot create object");
+var_dump($xml);
+
+$i=1;
+foreach($xml->books as $book)
 {
-echo "Book No =". $bnm->attributes()."<br>" ;
-echo "Book Name = $bnm->bookname: "."<br>";
-echo "Author Name = $bnm->authorname: "."<br>";
-echo "Price = $bnm->Price: "."<br>";
-echo "Year = $bnm->year; "."<br>";
+	echo "<br> Book  = $i";
+	echo "<br>books category attribute= ".$book->attributes();
+	echo "<br>book Number elements= ".$book->bookno;
+	echo "<br>book_name element= ".$book-> bookname;
+	echo "<br>author_name element= ".$book-> authorname;
+	echo "<br>price element = ".$book->price;
+	echo "<br>year element = ".$book->year;
+$i++;
+
 }
+
 ?>
+
 2. Write a PHP script to read “Movie.xml” file and print all MovieTitle and ActorName of file using DOMDocument
 Parser. “Movie.xml” file should contain following information with at least 5 records with values. MovieInfo, MovieNo, MovieTitle, ActorName , ReleaseYear
 Program:
+
+
 SetB2.php (generates movies.xml file run in terminal)
 <?php
 $doc = new DOMDocument("1.0", "UTF-8");
@@ -425,6 +461,55 @@ $movie->appendChild($releaseyear);
 $doc->save("movies.xml");
 echo "<h4>movies.xml created<h4>";
 ?>
+
+by simpleXMLelement
+<?php
+$xmlstr = '<?xml version="1.0" encoding="UTF-8" ?>';
+$sxe = new SimpleXMLElement("<Movie_Store></Movie_Store>");
+
+$item1 = $sxe->addChild('Movie');
+$item1->addAttribute('Category','Classical');
+$item1->addChild('MovieTitle','RRR');
+$item1->addChild('ActorName', 'Ram, NTR');
+$item1->addChild('ReleaseYear', 2022);
+
+$item2 = $sxe->addChild('Movie');
+$item2->addAttribute('Category','Classical');
+$item2->addChild('MovieTitle','Rockstar');
+$item2->addChild('ActorName', 'Ranbir');
+$item2->addChild('ReleaseYear', 2016);
+
+$item3 = $sxe->addChild('Movie');
+$item3->addAttribute('Category','Horror');
+$item3->addChild('MovieTitle','Bhul Bhuliya');
+$item3->addChild('ActorName', 'vidya balan');
+$item3->addChild('ReleaseYear', 2014);
+
+$item4 = $sxe->addChild('Movie');
+$item4->addAttribute('Category','Horror');
+$item4->addChild('MovieTitle','Raaz');
+$item4->addChild('ActorName', 'Emram hasmi');
+$item4->addChild('ReleaseYear', 2016);
+
+$item5 = $sxe->addChild('Movie');
+$item5->addAttribute('Category','Action');
+$item5->addChild('MovieTitle','Rowdy Rathod');
+$item5->addChild('ActorName', 'Akshay Kumar');
+$item5->addChild('ReleaseYear', 2017);
+
+$item6 = $sxe->addChild('Movie');
+$item6->addAttribute('Category','Action');
+$item6->addChild('MovieTitle','War');
+$item6->addChild('ActorName', 'hritik roshan');
+$item6->addChild('ReleaseYear', 2021);
+$sxe->asXML('movies.xml');
+
+echo "xml file is created";
+
+?>
+
+
+
 SetB2readmovies.php (reads movies.xml file)
 <?php
 $doc=simplexml_load_file("movies.xml");
@@ -436,6 +521,27 @@ echo "<br>"."Actor Name: ".$movie->ActorName."<br>";
 echo "<br>___________________________________________________________________________________<br>";
 }
 ?>
+
+or 
+
+<?php
+$xml=simplexml_load_file("movies.xml") or die("eror:cannot create object");
+var_dump($xml);
+
+foreach($xml->movies as $movie)
+{
+	echo "<br>Movie category attribute= $movie-> attributes() <br>";
+	echo "<br>Movie Title elements= $movie-> MovieTitle <br>";
+	echo "<br>Movie Actor name element= $movie-> ActorName <br>";
+	echo "<br>Release year element= $movie-> ReleaseYear <br>";
+
+
+}
+
+?>
+
+
+
 Set: C
 1. Create a XML file which gives details of movies available in “Movie CD Store “ from following categories
 a) Classical
@@ -496,9 +602,14 @@ $dom->appendChild($root);
 $dom->save($xml_file_name);
 echo "<a href= $xml_file_name> $xml_file_name </a> has been successfully created";
 ?>
+
+
+
 Assignment3: JavaScript and JQuery.
 Set: A
 1. Write a javascript to display message ‘Exams are near, have you started preparing for?’ using alert, prompt and confirm boxes. Accept proper input from user and display messages accordingly.
+
+
 Program:
 SetA1.html
 <!DOCTYPE html>
@@ -522,9 +633,12 @@ alert("Blank Name");
 </script>
 </body>
 </html>
+
+
 2. Add or append in paragraph text and also in the numbered(ordered) list in a given HTML document using jQuery selectors.[Hint : Use Append( ) method]
 Program:
-SetA2,html
+
+SetA2.html
 <!DOCTYPE html>
 <html>
 <head>
@@ -552,6 +666,8 @@ $("ol").append("<b> Number 5</b>");
 <button id = "btn2">Append Number </button>
 </body>
 </html>
+
+
 Set: B
 1. Write a javascript function to validate username and password for a membership form.
 Program:
@@ -580,8 +696,10 @@ Password: <input type="password" name="password"><br/>
 </form>
 </body>
 </html>
+
 2. To insert text before and after an image using jQuery.[Hint : Use before( ) and after( )].
 Program:
+
 SetB2.html
 <!DOCTYPE html>
 <html>
@@ -604,6 +722,8 @@ $("img").after("<b>and then you will understand everything better</b>");
 <button id = "btn2">After Text</button>
 </body>
 </html>
+
+
 Set: C
 1. Write a Javascript program to accept name of student, change font color to red, font size to 18 if student name is present otherwise on clicking on empty text box display image which changes its size (Use onblur, onload, onmousehover, onmouseclick, onmouseup)
 Program:
@@ -631,8 +751,10 @@ Enter Student Name <input type = "text" name = "t1" id = "pass"><br>
 <button onclick = "myFunction()">Click</button>
 </body>
 </html>
+
 2. Remove div section elements after clicking on button using jQuery. [Hint : Use #id selector]
 Program:
+
 SetC2.html
 <!DOCTYPE html>
 <html>
@@ -653,10 +775,14 @@ This is Div.
 <button id = "btn1">Click </button>
 </body>
 </html>
+
+
 Assignment4: Ajax
 Set: A
 1. Write AJAX program to read contact.dat file and print the contents of the file in a tabular format when the user clicks on print button. Contact.dat file should contain srno, name, residence number, mobile number, Address. [Enter at least 3 record in contact.dat file]
 Program:(SetA1.html-SetA1.php)
+
+
 SetA1.html
 <html>
 <head>
@@ -712,7 +838,11 @@ echo"</tr>";
 echo"</table>";
 fclose($fp);
 ?>
+
+
 2. Write AJAX program where the user is requested to write his or her name in a text box, and the server keeps sending back responses while the user is typing. If the user name is not entered then the message displayed will be, “Stranger, please tell me your name!”. If the name is Rohit, Virat, Dhoni, Ashwin or Harbhajan , the server responds with “Hello, master <user name>!”. If the name is anything else, the message will be “<user name>, I don’t know you!”.
+
+
 Program:(SetA2.html-SetA2.php)
 SetA2.html
 <html>
@@ -755,6 +885,8 @@ else
 echo "<br>Stranger , please tell me your name !";
 }
 ?>
+
+
 Set: B
 1. Create TEACHER table as follows TEACHER(tno, tname, qualification, salary). Write Ajax program to select a teachers name and print the selected teachers details.
 Program:(SetB1.html-SetB1.php)
@@ -785,6 +917,8 @@ Enter Teacher Name <input type = "text" name = "t1" id = "pass">
 <span id = "i"></span>
 </body>
 </html>
+
+
 SetB1.php
 <?php
 $tnm= $_GET['t1'];
@@ -797,7 +931,10 @@ while($row= pg_fetch_row($rs1))
 echo "$row[0] $row[1] $row[2] $row[3]\n<br>";
 pg_close();
 ?>
+
+
 2. Write Ajax program to print Order details by selecting a Customer’s name. Create table Customer and Order as follows with 1 : M cardinality CUSTOMER (cno, cname, city) and ORDER(ono, odate, shipping address)
+
 Program:(SetB2.html-SetB2.php)
 SetB2.html
 <html>
@@ -887,6 +1024,9 @@ if($s===$n)
 echo "$v<br>";
 }
 ?>
+
+
+
 2. Write Ajax program to get book details from XML file when user select a book name. Create XML file for storing details of book(title, author, year, price).
 Program:(Requires book.xml file)(SetC2.html-SetC2.php)
 SetC2.html
@@ -955,6 +1095,8 @@ echo "Year = $bnm->year "."<br>";
 }
 }
 ?>
+
+
 Book.xml
 <?xml version="1.0" encoding="utf-8"?>
 <BookInfo>
